@@ -5,6 +5,7 @@ import TicketRound from "./components/TicketRound"
 import Verdict from "./components/Verdict"
 import Summary from "./components/Summary"
 import Intro from "./components/Intro"
+import { claudeClassify } from "./lib/claudeClassify"
 
 const allTickets = ticketsData as Ticket[]
 
@@ -29,70 +30,78 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [results, setResults] = useState<RoundResult[]>([])
   const [pendingResult, setPendingResult] = useState<RoundResult | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [apiError, setApiError] = useState<string | null>(null)
+  const [pendingPlayerIntent, setPendingPlayerIntent] = useState<string | null>(null)
 
   const startGame = useCallback(() => {
     setTickets(sampleTickets())
     setCurrentIndex(0)
     setResults([])
     setPendingResult(null)
+    setApiError(null)
+    setPendingPlayerIntent(null)
     setPhase("playing")
   }, [])
 
   const handlePlayerChoice = useCallback(async (playerIntent: string) => {
     const ticket = tickets[currentIndex]
-
-    // call Claude API
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        system: `你是一个电商售后工单意图分类系统。分析客户消息，从以下意图中选择最匹配的一个：
-${INTENTS.join("、")}
-
-只返回JSON，不要有任何其他内容，格式：
-{"intent": "取消订单", "confidence": 0.94, "reason": "一句话说明判断依据"}`,
-        messages: [{ role: "user", content: ticket.message_zh }]
-      })
-    })
-
-    const data = await res.json()
-    let aiIntent = "其他"
-    let aiConfidence = 0.5
-    let aiReason = "无法判断"
+    setApiError(null)
+    setIsLoading(true)
+    setPendingPlayerIntent(playerIntent)
 
     try {
-      const text = data.content?.find((b: { type: string }) => b.type === "text")?.text ?? ""
-      const parsed = JSON.parse(text)
-      aiIntent = parsed.intent ?? "其他"
-      aiConfidence = parsed.confidence ?? 0.5
-      aiReason = parsed.reason ?? ""
-    } catch {
-      // keep defaults
+      const { intent, confidence, reason } = await claudeClassify(ticket.message_zh)
+      const result: RoundResult = {
+        ticket,
+        playerIntent,
+        aiIntent: intent,
+        aiConfidence: confidence,
+        aiReason: reason,
+        labeledIntent: ticket.labeled_intent_zh,
+        tripleMatch: playerIntent === intent && intent === ticket.labeled_intent_zh,
+        aiPlayerMatch: playerIntent === intent,
+        playerLabelMatch: playerIntent === ticket.labeled_intent_zh,
+      }
+      setPendingResult(result)
+      setPhase("verdict")
+    } catch (err) {
+      setApiError(err instanceof Error ? err.message : "网络异常，请重试")
+    } finally {
+      setIsLoading(false)
     }
+  }, [tickets, currentIndex])
 
+  const handleRetry = useCallback(() => {
+    if (pendingPlayerIntent) handlePlayerChoice(pendingPlayerIntent)
+  }, [pendingPlayerIntent, handlePlayerChoice])
+
+  const handleSkip = useCallback(() => {
+    const ticket = tickets[currentIndex]
+    const playerIntent = pendingPlayerIntent ?? "其他"
     const result: RoundResult = {
       ticket,
       playerIntent,
-      aiIntent,
-      aiConfidence,
-      aiReason,
+      aiIntent: "其他",
+      aiConfidence: 0,
+      aiReason: "API 调用失败，使用默认值",
       labeledIntent: ticket.labeled_intent_zh,
-      tripleMatch: playerIntent === aiIntent && aiIntent === ticket.labeled_intent_zh,
-      aiPlayerMatch: playerIntent === aiIntent,
+      tripleMatch: playerIntent === "其他" && ticket.labeled_intent_zh === "其他",
+      aiPlayerMatch: playerIntent === "其他",
       playerLabelMatch: playerIntent === ticket.labeled_intent_zh,
     }
-
     setPendingResult(result)
+    setApiError(null)
+    setPendingPlayerIntent(null)
     setPhase("verdict")
-  }, [tickets, currentIndex])
+  }, [tickets, currentIndex, pendingPlayerIntent])
 
   const handleNext = useCallback(() => {
     if (!pendingResult) return
     const newResults = [...results, pendingResult]
     setResults(newResults)
     setPendingResult(null)
+    setApiError(null)
 
     if (currentIndex + 1 >= ROUND_SIZE) {
       setPhase("summary")
@@ -113,6 +122,10 @@ ${INTENTS.join("、")}
         total={ROUND_SIZE}
         intents={INTENTS}
         onChoose={handlePlayerChoice}
+        isLoading={isLoading}
+        apiError={apiError}
+        onRetry={handleRetry}
+        onSkip={handleSkip}
       />
     )
   }
