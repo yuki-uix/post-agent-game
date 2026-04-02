@@ -1,3 +1,4 @@
+import { useState } from "react"
 import type { RoundResult } from "../types"
 
 type Props = {
@@ -12,8 +13,21 @@ export default function Summary({ results, onRestart }: Props) {
   const playerLabelMatches = results.filter(r => r.playerLabelMatch).length
   const disputes = results.filter(r => !r.tripleMatch && !r.aiPlayerMatch).length
 
-  // most interesting: player and AI disagree AND labeled differs too
   const mostInteresting = results.filter(r => !r.tripleMatch && !r.aiPlayerMatch)
+
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+
+  const toggleExpand = (id: string) => {
+    setExpandedIds(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) {
+        next.delete(id)
+      } else {
+        next.add(id)
+      }
+      return next
+    })
+  }
 
   return (
     <div className="animate-fade-in min-h-screen flex flex-col items-center justify-start px-6 py-10">
@@ -41,12 +55,22 @@ export default function Summary({ results, onRestart }: Props) {
         </div>
 
         {/* dispute breakdown */}
-        {mostInteresting.length > 0 && (
-          <div className="space-y-3">
-            <div className="text-sm font-medium text-gray-700">三方分歧的工单</div>
-            {mostInteresting.map((r, i) => (
-              <div key={i} className="bg-white border border-amber-200 rounded-xl p-4 space-y-2">
-                <p className="text-gray-800 text-sm">「{r.ticket.message_zh}」</p>
+        <div className="space-y-3">
+          <div className="text-sm font-medium text-gray-700">三方分歧的工单</div>
+
+          {mostInteresting.length === 0 && (
+            <div className="bg-teal-50 border border-teal-200 rounded-xl p-4">
+              <p className="text-teal-700 text-sm text-center">
+                这一局三方判断高度一致！试试下一局，看看更多模糊工单。
+              </p>
+            </div>
+          )}
+
+          {mostInteresting.map((r) => {
+            const isExpanded = expandedIds.has(r.ticket.id)
+            return (
+              <div key={r.ticket.id} className="bg-white border border-amber-200 rounded-xl p-4 space-y-2">
+                <p className="text-gray-800 text-sm leading-relaxed">「{r.ticket.message_zh}」</p>
                 <div className="flex flex-wrap gap-2 text-xs">
                   <span className="bg-gray-100 rounded-full px-3 py-1 text-gray-600">
                     你：{r.playerIntent}
@@ -59,18 +83,32 @@ export default function Summary({ results, onRestart }: Props) {
                   </span>
                 </div>
                 {r.ticket.note && (
-                  <p className="text-xs text-gray-500 leading-relaxed pt-1 border-t border-gray-100">
-                    {r.ticket.note}
-                  </p>
+                  <>
+                    <button
+                      onClick={() => toggleExpand(r.ticket.id)}
+                      className="text-xs text-gray-500 hover:text-gray-700 transition-colors flex items-center gap-1 pt-1"
+                    >
+                      {isExpanded ? "收起 ▴" : "展开设计思考 ▾"}
+                    </button>
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                        isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      <p className="text-xs text-gray-500 leading-relaxed pt-2 border-t border-gray-100">
+                        {r.ticket.note}
+                      </p>
+                    </div>
+                  </>
                 )}
               </div>
-            ))}
-          </div>
-        )}
+            )
+          })}
+        </div>
 
         <div className="bg-gray-900 text-gray-200 rounded-2xl p-5 text-sm leading-relaxed">
-          三方不一致的工单，不代表谁的判断「错了」——它说明这条工单的意图本身就是模糊的。
-          这正是 AI 不该自动执行、而应该先交给人判断的场景。
+          AI 意图识别做出判断之后，「自动执行还是等待人工确认」这条边界是设计问题，不是技术问题。
+          三方不一致的工单，正是 AI 不该自动执行、而应该先交给人判断的场景。
         </div>
 
         <button
