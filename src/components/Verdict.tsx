@@ -3,9 +3,10 @@ import type { RoundResult } from "../types"
 type Props = {
   result: RoundResult
   onNext: () => void
+  isLast?: boolean
 }
 
-export default function Verdict({ result, onNext }: Props) {
+export default function Verdict({ result, onNext, isLast }: Props) {
   const { ticket, playerIntent, aiIntent, aiConfidence, aiReason, labeledIntent, tripleMatch, aiPlayerMatch } = result
 
   const confidencePct = Math.round(aiConfidence * 100)
@@ -42,31 +43,35 @@ export default function Verdict({ result, onNext }: Props) {
               intent: playerIntent,
               sub: null,
               highlight: playerIntent !== labeledIntent && playerIntent !== aiIntent,
-              color: "border-gray-300 bg-white",
+              baseClass: "border-gray-200 bg-white",
             },
             {
               role: "AI 判断",
               intent: aiIntent,
               sub: `置信度 ${confidencePct}% · ${aiReason}`,
               highlight: aiIntent !== labeledIntent && aiIntent !== playerIntent,
-              color: "border-gray-300 bg-white",
+              baseClass: "border-gray-200 bg-white",
             },
             {
               role: "数据标注",
               intent: labeledIntent,
               sub: "Bitext 数据集原始标签",
               highlight: false,
-              color: "border-gray-200 bg-gray-50",
+              baseClass: "border-gray-200 bg-gray-50",
             },
           ].map(item => (
             <div
               key={item.role}
-              className={`rounded-xl border px-5 py-4 ${item.color}`}
+              className={`rounded-xl border px-5 py-4 transition-colors ${
+                item.highlight
+                  ? "border-amber-300 bg-amber-50"
+                  : item.baseClass
+              }`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="text-xs text-gray-400 mb-1">{item.role}</div>
-                  <div className={`font-semibold text-base ${item.highlight ? "text-amber-600" : "text-gray-900"}`}>
+                  <div className={`font-semibold text-base ${item.highlight ? "text-amber-700" : "text-gray-900"}`}>
                     {item.intent}
                   </div>
                   {item.sub && (
@@ -84,15 +89,15 @@ export default function Verdict({ result, onNext }: Props) {
         {/* design note */}
         {ticket.note && (
           <div className="bg-gray-900 text-gray-100 rounded-2xl p-5">
-            <div className="text-xs text-gray-400 mb-2 uppercase tracking-wider">设计思考</div>
+            <div className="text-xs text-gray-400 mb-2 uppercase tracking-wider font-medium">设计思考</div>
             <p className="text-sm leading-relaxed text-gray-200">{ticket.note}</p>
           </div>
         )}
 
         {!ticket.note && tripleMatch && (
           <div className="bg-teal-50 border border-teal-200 rounded-2xl p-5">
-            <p className="text-teal-700 text-sm">
-              这是一条意图明确的工单，三方判断一致。真正有趣的分歧在模糊和情绪类工单里。
+            <p className="text-teal-700 text-sm leading-relaxed">
+              这是一条意图明确的工单，三方判断一致。有趣的分歧在模糊和情绪类工单里——继续往下答吧。
             </p>
           </div>
         )}
@@ -105,7 +110,7 @@ export default function Verdict({ result, onNext }: Props) {
           onClick={onNext}
           className="w-full bg-gray-900 text-white rounded-xl py-4 text-base font-medium hover:bg-gray-700 transition-colors shadow-lg"
         >
-          下一条 →
+          {isLast ? "查看总结 →" : "下一条 →"}
         </button>
       </div>
     </div>
