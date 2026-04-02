@@ -91,7 +91,7 @@ ${INTENTS.join("、")}
     if (phase === "intro")
         return _jsx(Intro, { onStart: startGame }, "intro");
     if (phase === "playing" && tickets[currentIndex]) {
-        return (_jsx(TicketRound, { ticket: tickets[currentIndex], index: currentIndex, total: ROUND_SIZE, intents: INTENTS, onChoose: handlePlayerChoice }, `playing-${currentIndex}`));
+        return (_jsx(TicketRound, { ticket: tickets[currentIndex], index: currentIndex, total: ROUND_SIZE, intents: INTENTS, onChoose: handlePlayerChoice }, tickets[currentIndex].id));
     }
     if (phase === "verdict" && pendingResult) {
         return _jsx(Verdict, { result: pendingResult, onNext: handleNext }, `verdict-${currentIndex}`);

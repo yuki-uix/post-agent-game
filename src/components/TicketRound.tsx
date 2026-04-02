@@ -73,13 +73,14 @@ export default function TicketRound({
             <button
               key={intent}
               onClick={() => handleChoose(intent)}
-              disabled={isLoading}
+              disabled={isLoading || !!apiError}
               className={`w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all
                 ${selected === intent
-                  ? "bg-gray-900 text-white border-gray-900"
-                  : "bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50"
+                  ? "bg-gray-900 text-white border-gray-900 cursor-default"
+                  : (isLoading || !!apiError)
+                    ? "bg-white text-gray-400 border-gray-100 opacity-40 cursor-not-allowed"
+                    : "bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50 cursor-pointer"
                 }
-                ${isLoading && selected !== intent ? "opacity-40 cursor-not-allowed" : ""}
               `}
             >
               {intent}
@@ -94,13 +95,13 @@ export default function TicketRound({
         )}
 
         {apiError && (
-          <div className="rounded-xl border border-red-200 bg-red-50 p-4 space-y-3">
-            <p className="text-sm text-red-700 font-medium">⚠️ {apiError}</p>
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 space-y-3">
+            <p className="text-sm text-red-700">AI 判断失败：{apiError}</p>
             <div className="flex gap-2">
               {onRetry && (
                 <button
                   onClick={onRetry}
-                  className="flex-1 px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-700 transition-colors"
+                  className="flex-1 py-2 rounded-lg border border-red-300 text-red-700 text-sm hover:bg-red-100 transition-colors"
                 >
                   重试
                 </button>
@@ -108,9 +109,9 @@ export default function TicketRound({
               {onSkip && (
                 <button
                   onClick={onSkip}
-                  className="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
+                  className="flex-1 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm hover:bg-gray-200 transition-colors"
                 >
-                  跳过
+                  跳过（使用默认值）
                 </button>
               )}
             </div>
