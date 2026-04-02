@@ -23,13 +23,13 @@ export default function Intro({ onStart }: Props) {
 
         <div className="grid grid-cols-3 gap-3 text-center">
           {[
-            { label: "意图明确", desc: "建立基准" },
-            { label: "意图模糊", desc: "开始分歧" },
-            { label: "情绪激动", desc: "最难判断" },
+            { label: "意图明确", desc: "建立基准", card: "bg-gray-50 border-gray-200", title: "text-gray-800", sub: "text-gray-500" },
+            { label: "意图模糊", desc: "开始分歧", card: "bg-amber-50 border-amber-200", title: "text-amber-800", sub: "text-amber-600" },
+            { label: "情绪激动", desc: "最难判断", card: "bg-red-50 border-red-200", title: "text-red-800", sub: "text-red-600" },
           ].map(item => (
-            <div key={item.label} className="bg-gray-50 rounded-xl p-3 border border-gray-100">
-              <div className="font-medium text-gray-800 text-sm">{item.label}</div>
-              <div className="text-gray-400 text-xs mt-0.5">{item.desc}</div>
+            <div key={item.label} className={`rounded-xl p-3 border ${item.card}`}>
+              <div className={`font-medium text-sm ${item.title}`}>{item.label}</div>
+              <div className={`text-xs mt-0.5 ${item.sub}`}>{item.desc}</div>
             </div>
           ))}
         </div>
@@ -44,7 +44,7 @@ export default function Intro({ onStart }: Props) {
 
         <button
           onClick={onStart}
-          className="w-full bg-gray-900 text-white rounded-xl py-4 text-base font-medium hover:bg-gray-700 transition-colors"
+          className="w-full bg-gray-900 text-white rounded-xl py-4 text-base font-medium hover:bg-gray-700 active:bg-gray-800 transition-colors cursor-pointer"
         >
           开始挑战 →
         </button>

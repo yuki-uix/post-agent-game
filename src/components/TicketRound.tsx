@@ -7,6 +7,10 @@ type Props = {
   total: number
   intents: string[]
   onChoose: (intent: string) => Promise<void>
+  isLoading?: boolean
+  apiError?: string | null
+  onRetry?: () => void
+  onSkip?: () => void
 }
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -21,14 +25,15 @@ const CATEGORY_COLOR: Record<string, string> = {
   emotional: "bg-red-50 text-red-700 border-red-200",
 }
 
-export default function TicketRound({ ticket, index, total, intents, onChoose }: Props) {
+export default function TicketRound({
+  ticket, index, total, intents, onChoose,
+  isLoading = false, apiError = null, onRetry, onSkip,
+}: Props) {
   const [selected, setSelected] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
 
   const handleChoose = async (intent: string) => {
-    if (loading) return
+    if (isLoading) return
     setSelected(intent)
-    setLoading(true)
     await onChoose(intent)
   }
 
@@ -46,7 +51,7 @@ export default function TicketRound({ ticket, index, total, intents, onChoose }:
 
         <div className="w-full bg-gray-100 rounded-full h-1.5">
           <div
-            className="bg-gray-800 h-1.5 rounded-full transition-all"
+            className="bg-gray-800 h-1.5 rounded-full transition-all duration-300"
             style={{ width: `${((index) / total) * 100}%` }}
           />
         </div>
@@ -61,32 +66,75 @@ export default function TicketRound({ ticket, index, total, intents, onChoose }:
           </p>
         </div>
 
-        {/* intent choices */}
-        <div className="space-y-2">
-          <div className="text-sm text-gray-500 mb-3">你判断这条工单的意图是？</div>
-          {intents.map(intent => (
-            <button
-              key={intent}
-              onClick={() => handleChoose(intent)}
-              disabled={loading}
-              className={`w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all
-                ${selected === intent
-                  ? "bg-gray-900 text-white border-gray-900"
-                  : "bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50"
-                }
-                ${loading && selected !== intent ? "opacity-40 cursor-not-allowed" : ""}
-              `}
-            >
-              {intent}
-            </button>
-          ))}
+        {/* AI status — smooth expand/collapse to avoid layout jitter */}
+        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isLoading || apiError ? "max-h-40" : "max-h-0"}`}>
+          {isLoading && (
+            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 border border-gray-200">
+              <svg className="animate-spin h-4 w-4 text-gray-500 shrink-0" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+              </svg>
+              <span className="text-sm text-gray-500">AI 正在判断，通常需要 3–5 秒…</span>
+            </div>
+          )}
+
+          {apiError && (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 space-y-3">
+              <p className="text-sm text-red-700">AI 判断失败：{apiError}</p>
+              <div className="flex gap-2">
+                {onRetry && (
+                  <button
+                    onClick={onRetry}
+                    className="flex-1 py-2 rounded-lg border border-red-300 text-red-700 text-sm hover:bg-red-100 transition-colors"
+                  >
+                    重试
+                  </button>
+                )}
+                {onSkip && (
+                  <button
+                    onClick={onSkip}
+                    className="flex-1 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm hover:bg-gray-200 transition-colors"
+                  >
+                    跳过（使用默认值）
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
-        {loading && (
-          <div className="text-center text-gray-400 text-sm animate-pulse py-2">
-            AI 正在判断中…
+        {/* intent choices */}
+        <div>
+          <div className="text-sm text-gray-500 mb-3">你判断这条工单的意图是？</div>
+          <div className="grid grid-cols-2 gap-2">
+            {intents.map(intent => (
+              <button
+                key={intent}
+                onClick={() => handleChoose(intent)}
+                disabled={isLoading || !!apiError}
+                className={`w-full text-center px-3 py-2.5 rounded-xl border text-sm font-medium transition-all
+                  ${selected === intent
+                    ? "bg-gray-900 text-white border-gray-900 cursor-default"
+                    : (isLoading || !!apiError)
+                      ? "bg-white text-gray-400 border-gray-100 opacity-40 cursor-not-allowed"
+                      : "bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50 cursor-pointer"
+                  }
+                `}
+              >
+                {isLoading && selected === intent ? (
+                  <span className="flex items-center justify-center gap-1.5">
+                    <svg className="animate-spin h-3.5 w-3.5 text-white shrink-0" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                    </svg>
+                    AI 判断中…
+                  </span>
+                ) : intent}
+              </button>
+            ))}
           </div>
-        )}
+        </div>
+
       </div>
     </div>
   )

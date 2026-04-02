@@ -97,9 +97,13 @@ export default function Verdict({ result, onNext }: Props) {
           </div>
         )}
 
+      </div>
+
+      {/* sticky next button — always visible, no scroll required */}
+      <div className="sticky bottom-0 w-full max-w-lg px-6 pb-6 pt-3 bg-gradient-to-t from-white via-white to-transparent">
         <button
           onClick={onNext}
-          className="w-full bg-gray-900 text-white rounded-xl py-4 text-base font-medium hover:bg-gray-700 transition-colors"
+          className="w-full bg-gray-900 text-white rounded-xl py-4 text-base font-medium hover:bg-gray-700 transition-colors shadow-lg"
         >
           下一条 →
         </button>
