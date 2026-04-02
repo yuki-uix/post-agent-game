@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { Ticket } from "../App"
+import type { Ticket } from "../types"
 
 type Props = {
   ticket: Ticket
@@ -33,7 +33,7 @@ export default function TicketRound({ ticket, index, total, intents, onChoose }:
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start px-6 py-10">
+    <div className="animate-fade-in min-h-screen flex flex-col items-center justify-start px-6 py-10">
       <div className="max-w-lg w-full space-y-6">
 
         {/* progress */}

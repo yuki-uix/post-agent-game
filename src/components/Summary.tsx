@@ -1,4 +1,4 @@
-import type { RoundResult } from "../App"
+import type { RoundResult } from "../types"
 
 type Props = {
   results: RoundResult[]
@@ -16,7 +16,7 @@ export default function Summary({ results, onRestart }: Props) {
   const mostInteresting = results.filter(r => !r.tripleMatch && !r.aiPlayerMatch)
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start px-6 py-10">
+    <div className="animate-fade-in min-h-screen flex flex-col items-center justify-start px-6 py-10">
       <div className="max-w-lg w-full space-y-6">
 
         <div className="text-center space-y-2">

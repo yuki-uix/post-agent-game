@@ -1,29 +1,12 @@
 import { useState, useCallback } from "react"
-import allTickets from "./data/tickets.json"
+import type { Ticket, RoundResult } from "./types"
+import ticketsData from "./data/tickets.json"
 import TicketRound from "./components/TicketRound"
 import Verdict from "./components/Verdict"
 import Summary from "./components/Summary"
 import Intro from "./components/Intro"
 
-export type Ticket = {
-  id: string
-  message_zh: string
-  category: "clear" | "ambiguous" | "emotional"
-  labeled_intent_zh: string
-  note: string
-}
-
-export type RoundResult = {
-  ticket: Ticket
-  playerIntent: string
-  aiIntent: string
-  aiConfidence: number
-  aiReason: string
-  labeledIntent: string
-  tripleMatch: boolean
-  aiPlayerMatch: boolean
-  playerLabelMatch: boolean
-}
+const allTickets = ticketsData as Ticket[]
 
 const INTENTS = [
   "取消订单", "修改订单", "申请退款", "咨询退款政策",
@@ -119,11 +102,12 @@ ${INTENTS.join("、")}
     }
   }, [pendingResult, results, currentIndex])
 
-  if (phase === "intro") return <Intro onStart={startGame} />
+  if (phase === "intro") return <Intro key="intro" onStart={startGame} />
 
   if (phase === "playing" && tickets[currentIndex]) {
     return (
       <TicketRound
+        key={`playing-${currentIndex}`}
         ticket={tickets[currentIndex]}
         index={currentIndex}
         total={ROUND_SIZE}
@@ -134,11 +118,11 @@ ${INTENTS.join("、")}
   }
 
   if (phase === "verdict" && pendingResult) {
-    return <Verdict result={pendingResult} onNext={handleNext} />
+    return <Verdict key={`verdict-${currentIndex}`} result={pendingResult} onNext={handleNext} />
   }
 
   if (phase === "summary") {
-    return <Summary results={results} onRestart={startGame} />
+    return <Summary key="summary" results={results} onRestart={startGame} />
   }
 
   return null

@@ -2,7 +2,7 @@ type Props = { onStart: () => void }
 
 export default function Intro({ onStart }: Props) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-16">
+    <div className="animate-fade-in min-h-screen flex flex-col items-center justify-center px-6 py-16">
       <div className="max-w-lg w-full text-center space-y-8">
 
         <div className="space-y-3">
