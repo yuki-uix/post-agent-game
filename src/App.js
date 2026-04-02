@@ -107,7 +107,7 @@ export default function App() {
         return (_jsx(TicketRound, { ticket: tickets[currentIndex], index: currentIndex, total: ROUND_SIZE, intents: INTENTS, onChoose: handlePlayerChoice, isLoading: isLoading, apiError: apiError, onRetry: handleRetry, onSkip: handleSkip }, tickets[currentIndex].id));
     }
     if (phase === "verdict" && pendingResult) {
-        return _jsx(Verdict, { result: pendingResult, onNext: handleNext }, `verdict-${currentIndex}`);
+        return _jsx(Verdict, { result: pendingResult, onNext: handleNext, isLast: results.length + 1 >= ROUND_SIZE }, pendingResult.ticket.id);
     }
     if (phase === "summary") {
         return _jsx(Summary, { results: results, onRestart: startGame }, "summary");

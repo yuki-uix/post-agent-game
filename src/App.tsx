@@ -131,7 +131,7 @@ export default function App() {
   }
 
   if (phase === "verdict" && pendingResult) {
-    return <Verdict key={pendingResult.ticket.id} result={pendingResult} onNext={handleNext} isLast={currentIndex + 1 >= ROUND_SIZE} />
+    return <Verdict key={pendingResult.ticket.id} result={pendingResult} onNext={handleNext} isLast={results.length + 1 >= ROUND_SIZE} />
   }
 
   if (phase === "summary") {
