@@ -107,7 +107,7 @@ ${INTENTS.join("、")}
   if (phase === "playing" && tickets[currentIndex]) {
     return (
       <TicketRound
-        key={`playing-${currentIndex}`}
+        key={tickets[currentIndex].id}
         ticket={tickets[currentIndex]}
         index={currentIndex}
         total={ROUND_SIZE}
