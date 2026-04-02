@@ -1,0 +1,352 @@
+[
+  {
+    "id": "ticket_001",
+    "message_zh": "我想取消昨天下的订单，还来得及吗？",
+    "category": "clear",
+    "labeled_intent_zh": "取消订单",
+    "note": ""
+  },
+  {
+    "id": "ticket_002",
+    "message_zh": "请问我的退款什么时候能到账？已经等了五天了",
+    "category": "clear",
+    "labeled_intent_zh": "查询退款进度",
+    "note": ""
+  },
+  {
+    "id": "ticket_003",
+    "message_zh": "我要退货，收到的颜色和图片完全不一样",
+    "category": "clear",
+    "labeled_intent_zh": "申请退款",
+    "note": ""
+  },
+  {
+    "id": "ticket_004",
+    "message_zh": "能帮我查一下快递到哪里了吗？单号是SF1234567890",
+    "category": "clear",
+    "labeled_intent_zh": "查询物流",
+    "note": ""
+  },
+  {
+    "id": "ticket_005",
+    "message_zh": "我想把订单里的L码改成XL码，可以吗？",
+    "category": "clear",
+    "labeled_intent_zh": "修改订单",
+    "note": ""
+  },
+  {
+    "id": "ticket_006",
+    "message_zh": "取消订单需要手续费吗？",
+    "category": "clear",
+    "labeled_intent_zh": "咨询取消费用",
+    "note": ""
+  },
+  {
+    "id": "ticket_007",
+    "message_zh": "你们的退款政策是怎么规定的？几天内可以退？",
+    "category": "clear",
+    "labeled_intent_zh": "咨询退款政策",
+    "note": ""
+  },
+  {
+    "id": "ticket_008",
+    "message_zh": "我的包裹显示已签收但我没收到，怎么回事",
+    "category": "clear",
+    "labeled_intent_zh": "查询物流",
+    "note": ""
+  },
+  {
+    "id": "ticket_009",
+    "message_zh": "请问大概几天能送到？我急用",
+    "category": "clear",
+    "labeled_intent_zh": "咨询配送时效",
+    "note": ""
+  },
+  {
+    "id": "ticket_010",
+    "message_zh": "我要投诉，客服态度太差了，问题也没解决",
+    "category": "clear",
+    "labeled_intent_zh": "投诉",
+    "note": ""
+  },
+  {
+    "id": "ticket_011",
+    "message_zh": "收到的东西有问题，我要退",
+    "category": "clear",
+    "labeled_intent_zh": "申请退款",
+    "note": ""
+  },
+  {
+    "id": "ticket_012",
+    "message_zh": "帮我取消订单，我不想要了",
+    "category": "clear",
+    "labeled_intent_zh": "取消订单",
+    "note": ""
+  },
+  {
+    "id": "ticket_013",
+    "message_zh": "我的退款申请审核通过了吗？",
+    "category": "clear",
+    "labeled_intent_zh": "查询退款进度",
+    "note": ""
+  },
+  {
+    "id": "ticket_014",
+    "message_zh": "能换个人工客服吗，这个问题太复杂了",
+    "category": "clear",
+    "labeled_intent_zh": "转人工客服",
+    "note": ""
+  },
+  {
+    "id": "ticket_015",
+    "message_zh": "我想修改一下收货地址，订单还没发货",
+    "category": "clear",
+    "labeled_intent_zh": "修改订单",
+    "note": ""
+  },
+  {
+    "id": "ticket_016",
+    "message_zh": "质量太差了，买回来一周就坏了，退退退",
+    "category": "clear",
+    "labeled_intent_zh": "申请退款",
+    "note": ""
+  },
+  {
+    "id": "ticket_017",
+    "message_zh": "能帮我查下物流嘛，好几天没动静了",
+    "category": "clear",
+    "labeled_intent_zh": "查询物流",
+    "note": ""
+  },
+  {
+    "id": "ticket_018",
+    "message_zh": "我要退款，支付宝付的能退到支付宝吗",
+    "category": "clear",
+    "labeled_intent_zh": "申请退款",
+    "note": ""
+  },
+  {
+    "id": "ticket_019",
+    "message_zh": "你们客服在吗？有问题要问",
+    "category": "clear",
+    "labeled_intent_zh": "转人工客服",
+    "note": ""
+  },
+  {
+    "id": "ticket_020",
+    "message_zh": "请问如果不想要了可以取消吗，订单刚下",
+    "category": "clear",
+    "labeled_intent_zh": "取消订单",
+    "note": ""
+  },
+  {
+    "id": "ticket_021",
+    "message_zh": "东西有点问题，你们怎么说",
+    "category": "ambiguous",
+    "labeled_intent_zh": "投诉",
+    "note": "\"有点问题\"信息量极低——可能是质量问题、物流损坏、尺寸不对，或者只是想咨询。AI高置信度判断为\"投诉\"，但正确处置应该先引导用户说清楚具体情况。"
+  },
+  {
+    "id": "ticket_022",
+    "message_zh": "我朋友说这个质量不好，我有点担心",
+    "category": "ambiguous",
+    "labeled_intent_zh": "咨询退款政策",
+    "note": "用户还没有收到货，甚至可能还没下单。\"担心\"不是售后意图，是购前顾虑。自动触发任何售后流程都是错的。"
+  },
+  {
+    "id": "ticket_023",
+    "message_zh": "我想换一下，但不确定能不能换",
+    "category": "ambiguous",
+    "labeled_intent_zh": "修改订单",
+    "note": "\"换一下\"可能是换货、换尺码、换地址或换颜色，意图指向完全不同的操作。需要先引导明确。"
+  },
+  {
+    "id": "ticket_024",
+    "message_zh": "这个还有别的颜色吗，我买的这个不太好看",
+    "category": "ambiguous",
+    "labeled_intent_zh": "修改订单",
+    "note": "用户可能在问库存（购前咨询），也可能想换货（售后），也可能只是抱怨。三种意图对应完全不同的处理路径。"
+  },
+  {
+    "id": "ticket_025",
+    "message_zh": "快递一直不动，正常吗",
+    "category": "ambiguous",
+    "labeled_intent_zh": "查询物流",
+    "note": "表面是物流查询，但\"正常吗\"暗示用户有焦虑，如果物流确实异常，正确处置是主动说明原因+预计到达时间，而不只是返回物流信息。"
+  },
+  {
+    "id": "ticket_026",
+    "message_zh": "能退吗",
+    "category": "ambiguous",
+    "labeled_intent_zh": "申请退款",
+    "note": "两个字，没有订单信息，没有退货原因。AI可能高置信判断为\"申请退款\"，但自动触发退货流程是错的——连退的是哪个订单都不知道。"
+  },
+  {
+    "id": "ticket_027",
+    "message_zh": "我的单子有点问题，麻烦帮我看一下",
+    "category": "ambiguous",
+    "labeled_intent_zh": "投诉",
+    "note": "\"单子有点问题\"可能是订单信息填错、支付问题、发货延迟等，完全无法判断意图。正确做法是请用户描述具体情况。"
+  },
+  {
+    "id": "ticket_028",
+    "message_zh": "我想改一下，可以吗",
+    "category": "ambiguous",
+    "labeled_intent_zh": "修改订单",
+    "note": "改什么？数量、地址、颜色、尺码，还是直接取消重下？没有上下文，任何操作都不该自动执行。"
+  },
+  {
+    "id": "ticket_029",
+    "message_zh": "已经付款了但是还没收到，怎么处理",
+    "category": "ambiguous",
+    "labeled_intent_zh": "查询物流",
+    "note": "可能是发货延迟（物流查询）、物流丢件（投诉+补发）或支付成功但订单未生成（系统问题）。三种情况处置方式差异很大。"
+  },
+  {
+    "id": "ticket_030",
+    "message_zh": "我对这次购物不太满意",
+    "category": "ambiguous",
+    "labeled_intent_zh": "投诉",
+    "note": "情绪明确但意图模糊。\"不太满意\"可能导向投诉、退货或只是想表达不满。过早触发退款流程反而可能让用户困惑。"
+  },
+  {
+    "id": "ticket_031",
+    "message_zh": "什么破东西！！根本不能用！！退退退！！",
+    "category": "emotional",
+    "labeled_intent_zh": "申请退款",
+    "note": "字面意图是退款，但情绪激烈。自动触发退货流程在技术上\"正确\"，但跳过情绪安抚会让用户感觉更被忽视。正确处置：先响应情绪，再处理意图。"
+  },
+  {
+    "id": "ticket_032",
+    "message_zh": "你们卖的什么垃圾！骗子！我要投诉你们！",
+    "category": "emotional",
+    "labeled_intent_zh": "投诉",
+    "note": "高情绪激活状态，\"骗子\"是情绪化用语而非事实陈述。这类工单需要人工介入，AI自动回复容易火上浇油。"
+  },
+  {
+    "id": "ticket_033",
+    "message_zh": "太让我失望了，这已经是第三次出问题了，我再也不买了",
+    "category": "emotional",
+    "labeled_intent_zh": "投诉",
+    "note": "\"第三次\"意味着有历史记录，处置时需要调取用户历史工单。纯意图识别看不到这个上下文，AI判断的\"投诉\"标签是对的，但处置方式必须个性化。"
+  },
+  {
+    "id": "ticket_034",
+    "message_zh": "我等了两个星期！！快递呢！！你们是认真在做生意吗！！",
+    "category": "emotional",
+    "labeled_intent_zh": "查询物流",
+    "note": "意图是物流查询，但情绪已经升级。如果直接返回\"您的快递正在运输中\"，用户会更愤怒。这类消息需要先致歉，再给出具体信息。"
+  },
+  {
+    "id": "ticket_035",
+    "message_zh": "买之前说好的赠品没有！还有就是质量也太差了吧，这价格",
+    "category": "emotional",
+    "labeled_intent_zh": "投诉",
+    "note": "包含两个独立诉求：赠品缺失和质量不满。AI可能只识别出\"投诉\"，但处置时需要同时响应两个问题，否则用户会继续追问。"
+  },
+  {
+    "id": "ticket_036",
+    "message_zh": "你们的售后真的很差，问题解决不了，客服也不礼貌",
+    "category": "emotional",
+    "labeled_intent_zh": "投诉",
+    "note": "这是对服务本身的投诉，而不是对商品的投诉。意图分类容易混淆，但处置路径完全不同——需要升级到主管级别，而不是重新发起商品退换。"
+  },
+  {
+    "id": "ticket_037",
+    "message_zh": "心情很差，买了这个更差，退了算了",
+    "category": "emotional",
+    "labeled_intent_zh": "申请退款",
+    "note": "\"心情很差\"是与购物无关的情绪表达，退货可能只是情绪出口而非真实诉求。自动触发退货可能是对的，也可能用户次日就反悔。"
+  },
+  {
+    "id": "ticket_038",
+    "message_zh": "你们什么时候发货？！等到花儿都谢了！",
+    "category": "emotional",
+    "labeled_intent_zh": "查询物流",
+    "note": "夸张表达带有明确的不满情绪，但诉求是发货状态查询。回复需要兼顾致歉和信息提供，纯自动物流查询回复会显得冷漠。"
+  },
+  {
+    "id": "ticket_039",
+    "message_zh": "已经退款三次了还没退成功是什么情况？？",
+    "category": "emotional",
+    "labeled_intent_zh": "查询退款进度",
+    "note": "\"三次\"说明这是一个反复未解决的问题，有历史背景。AI标注为\"查询退款进度\"是对的，但必须调取历史工单才能有效处置，否则只会再次给出通用答复。"
+  },
+  {
+    "id": "ticket_040",
+    "message_zh": "这什么玩意儿，穿了一次就坏了，不退我就去投诉平台！",
+    "category": "emotional",
+    "labeled_intent_zh": "申请退款",
+    "note": "包含威胁升级信号（\"投诉平台\"），这类工单优先级应该自动提升，需要人工介入而非自动化处置。纯意图识别看不到这个升级信号。"
+  },
+  {
+    "id": "ticket_041",
+    "message_zh": "发货了吗？能不能快点",
+    "category": "ambiguous",
+    "labeled_intent_zh": "查询物流",
+    "note": ""
+  },
+  {
+    "id": "ticket_042",
+    "message_zh": "我要换货，可以直接换吗还是要先退再买",
+    "category": "ambiguous",
+    "labeled_intent_zh": "修改订单",
+    "note": "用户在询问换货流程，而不是直接提交换货申请。正确处置是解释流程，而不是自动发起退款。"
+  },
+  {
+    "id": "ticket_043",
+    "message_zh": "这个订单有问题，你帮我处理一下",
+    "category": "ambiguous",
+    "labeled_intent_zh": "投诉",
+    "note": "\"有问题\"和\"处理一下\"都没有任何信息量，必须先引导用户说清楚。"
+  },
+  {
+    "id": "ticket_044",
+    "message_zh": "我不想要了，但是不知道能不能退",
+    "category": "ambiguous",
+    "labeled_intent_zh": "咨询退款政策",
+    "note": "用户先在咨询政策，还没有明确发起退款申请。自动触发退款流程是抢跑。"
+  },
+  {
+    "id": "ticket_045",
+    "message_zh": "到货了但感觉跟描述不太一样",
+    "category": "ambiguous",
+    "labeled_intent_zh": "投诉",
+    "note": "\"感觉\"和\"不太一样\"都是模糊表达。用户可能想退货，也可能只是表达一下，需要引导才能判断真实意图。"
+  },
+  {
+    "id": "ticket_046",
+    "message_zh": "帮我取消吧，xièxiè",
+    "category": "ambiguous",
+    "labeled_intent_zh": "取消订单",
+    "note": ""
+  },
+  {
+    "id": "ticket_047",
+    "message_zh": "我的钱什么时候回来",
+    "category": "ambiguous",
+    "labeled_intent_zh": "查询退款进度",
+    "note": "意图相对清晰，但没有订单号，无法查询具体状态。"
+  },
+  {
+    "id": "ticket_048",
+    "message_zh": "能帮我退一下吗，我最近手头紧",
+    "category": "ambiguous",
+    "labeled_intent_zh": "申请退款",
+    "note": "退款原因是个人资金压力而非商品问题，是否符合退货政策需要人工判断，不适合自动执行。"
+  },
+  {
+    "id": "ticket_049",
+    "message_zh": "收到了，但是感觉一般，还能退吗",
+    "category": "ambiguous",
+    "labeled_intent_zh": "咨询退款政策",
+    "note": "\"感觉一般\"不是法定退货理由，是否受理取决于商家政策。AI判断意图是对的，但能不能退需要人工核查政策后答复。"
+  },
+  {
+    "id": "ticket_050",
+    "message_zh": "你们这也太慢了，别人家早就到了",
+    "category": "emotional",
+    "labeled_intent_zh": "查询物流",
+    "note": "比较性抱怨，情绪带有不满但没有明确诉求。物流查询是对的，但回复需要先致歉再给信息，纯信息回复会显得敷衍。"
+  }
+]
