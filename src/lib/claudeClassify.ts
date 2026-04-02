@@ -17,31 +17,33 @@ export type ClassifyResult = {
 }
 
 export async function claudeClassify(message: string): Promise<ClassifyResult> {
-  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY
-  if (!apiKey) throw new Error("未配置 VITE_ANTHROPIC_API_KEY")
+  const apiKey = import.meta.env.VITE_DEEPSEEK_API_KEY
+  if (!apiKey) throw new Error("未配置 VITE_DEEPSEEK_API_KEY")
 
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
+  const res = await fetch("https://api.deepseek.com/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true",
+      "Authorization": `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
+      model: "deepseek-chat",
       max_tokens: 256,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: message }],
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: message },
+      ],
     }),
   })
 
-  if (!res.ok) throw new Error(`API 请求失败 (${res.status})`)
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}))
+    const detail = (errBody as { error?: { message?: string } }).error?.message ?? ""
+    throw new Error(`API 请求失败 (${res.status})${detail ? `：${detail}` : ""}`)
+  }
 
   const data = await res.json()
-  const text: string = data.content?.find(
-    (b: { type: string }) => b.type === "text"
-  )?.text ?? ""
+  const text: string = data.choices?.[0]?.message?.content ?? ""
 
   const parsed = JSON.parse(text) as ClassifyResult
   if (!parsed.intent) throw new Error("API 返回格式异常")
